@@ -65,7 +65,7 @@ class usuario
          $nombre = $data['nombre'];
          $direccion = $data['direccion'];
          $fecha = $data['fecha'];
-         $contrasenna = $data['contrasenna'];
+         $contrasenna = password_hash($data['contrasenna'], PASSWORD_DEFAULT);;
          $rol = $data['rol'];
          $estado = $data['estado'];
 
