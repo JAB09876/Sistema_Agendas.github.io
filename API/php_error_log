@@ -1,2 +1,0 @@
-[25-May-2024 06:29:47 Europe/Berlin] PHP Warning:  Attempt to read property "num_rows" on bool in C:\xampp\htdocs\API\models\MySqlConnect.php on line 42
-[25-May-2024 06:30:33 Europe/Berlin] PHP Warning:  Attempt to read property "num_rows" on bool in C:\xampp\htdocs\API\models\MySqlConnect.php on line 42
