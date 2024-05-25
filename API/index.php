@@ -12,10 +12,8 @@ header('Content-Type: application/json');
 /*--- Requerimientos Clases o librerías*/
 require_once "models/MySqlConnect.php";
 /***--- Agregar todos los modelos*/
-require_once "models/MovieModel.php";
 require_once "models/UsuarioModel.php";
 /***--- Agregar todos los controladores*/
-require_once "controllers/MovieController.php";
 require_once "controllers/UsuarioController.php";
 //Enrutador
 //RoutesController.php
