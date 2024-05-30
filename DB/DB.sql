@@ -10,6 +10,18 @@ CREATE SCHEMA IF NOT EXISTS `Sistema_Agenda` DEFAULT CHARACTER SET utf8 ;
 USE `Sistema_Agenda` ;
 
 -- -----------------------------------------------------
+-- Table `Sistema_Agenda`.`Sucursal`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Sucursal` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) NOT NULL,
+  `telefono` VARCHAR(9) NULL,
+  `correo_electronico` VARCHAR(255) NOT NULL,
+  `direccion_exacta` VARCHAR(350) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `Sistema_Agenda`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Usuario` (
@@ -22,26 +34,16 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Usuario` (
   `contrasenna` VARCHAR(24) NOT NULL,
   `rol` ENUM('Cliente', 'Encargado', 'Administrador') NOT NULL,
   `estado` TINYINT NULL,
+  `idSucursal` INT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE (`telefono`),
-  UNIQUE (`correo_electronico`),
-  UNIQUE (`nombre`),
-  UNIQUE (`contrasenna`)
-)
+  CONSTRAINT `FK_Sucursal_Usuario`
+    FOREIGN KEY (`idSucursal`)
+    REFERENCES `Sistema_Agenda`.`Sucursal` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `Sistema_Agenda`.`Sucursal`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Sucursal` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(255) NOT NULL,
-  `telefono` VARCHAR(9) NULL,
-  `correo_electronico` VARCHAR(255) NOT NULL,
-  `direccion_exacta` VARCHAR(350) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 
@@ -191,28 +193,6 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Cita` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `Sistema_Agenda`.`Usuario_Sucursal`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Usuario_Sucursal` (
-  `idUsuario` INT NOT NULL,
-  `idSucursal` INT NOT NULL,
-  PRIMARY KEY (`idUsuario`, `idSucursal`),
-  CONSTRAINT `FK_Usuario_Usuario_Sucursal`
-    FOREIGN KEY (`idUsuario`)
-    REFERENCES `Sistema_Agenda`.`Usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Sucursal_Usuario_Sucursal`
-    FOREIGN KEY (`idSucursal`)
-    REFERENCES `Sistema_Agenda`.`Sucursal` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `FK_Sucursal_Usuario_Sucursal_idx` ON `Sistema_Agenda`.`Usuario_Sucursal` (`idSucursal` ASC) VISIBLE;
-
 
 -- -----------------------------------------------------
 -- Table `Sistema_Agenda`.`Dia`
