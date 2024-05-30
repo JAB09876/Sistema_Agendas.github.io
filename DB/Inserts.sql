@@ -11,3 +11,18 @@ VALUES
   ('689012345', 'pedro.martin@example.com', 'Pedro Martin', 'Av. Sol 567', '1989-11-11', 'solsol', 'Administrador', 1),
   ('690123456', 'julia.rodriguez@example.com', 'Julia Rodriguez', 'Calle Estrella 789', '1991-09-09', 'estrellita', 'Cliente', 1),
   ('701234567', 'rafael.garcia@example.com', 'Rafael Garcia', 'Plaza Central 111', '1983-04-17', 'central83', 'Encargado', 1);
+
+INSERT INTO `Sistema_Agenda`.`Sucursal` 
+(`nombre`, `telefono`, `correo_electronico`, `direccion_exacta`) 
+VALUES 
+('Sucursal San José', '22223333', 'sanjose@sistema_agenda.cr', 'Avenida Central, San José, Costa Rica');
+
+INSERT INTO `Sistema_Agenda`.`Sucursal` 
+(`nombre`, `telefono`, `correo_electronico`, `direccion_exacta`) 
+VALUES 
+('Sucursal Alajuela', '24445555', 'alajuela@sistema_agenda.cr', 'Calle Central, Alajuela, Costa Rica');
+
+INSERT INTO `Sistema_Agenda`.`Sucursal` 
+(`nombre`, `telefono`, `correo_electronico`, `direccion_exacta`) 
+VALUES 
+('Sucursal Heredia', '22667788', 'heredia@sistema_agenda.cr', 'Boulevard de las Flores, Heredia, Costa Rica');
