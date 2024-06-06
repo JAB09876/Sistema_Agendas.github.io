@@ -14,7 +14,7 @@ class MySqlConnect
     {
         // Parametros de conexión
         $this->username = "root";
-        $this->password = "JAB09876";
+        $this->password = "123456";
         $this->host = "localhost";
         $this->dbname = "sistema_agenda";
     }
