@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Producto` (
   `descripcion` VARCHAR(150) NULL,
   `precio` FLOAT NULL,
   `estado` TINYINT NULL,
+  `imagen` LONGBLOD NOT NULL,
   `idCategoria` INT NOT NULL,
   `idMarca` INT NOT NULL,
   PRIMARY KEY (`id`),
