@@ -101,6 +101,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Especialidad` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `descripcion` TEXT NOT NULL,
+  `estado` TINYINT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -109,13 +110,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Medico` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(100) NULL,
-  `foto` VARCHAR(255) NULL,
+  `nombre` VARCHAR(100) NOT NULL,
+  `estado` TINYINT NOT NULL,
+  `foto` LONGBLOB NOT NULL,
   `idEspecilidad` INT NOT NULL,
+  `idSucursal` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_Especialidad_Medico`
     FOREIGN KEY (`idEspecilidad`)
     REFERENCES `Sistema_Agenda`.`Especialidad` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_Sucursal_Medico`
+    FOREIGN KEY (`idSucursal`)
+    REFERENCES `Sistema_Agenda`.`Sucursal` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -127,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Servicio` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(255) NOT NULL,
   `nivel_atencion` VARCHAR(255) NOT NULL,
+  `estado` TINYINT NOT NULL,
   `idEspecialidad` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_Especialidad_Servicio`
@@ -145,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Subservicio` (
   `descripción` VARCHAR(255) NOT NULL,
   `nombre` VARCHAR(255) NOT NULL,
   `monto` DECIMAL(10,2) NOT NULL,
+  `estado` TINYINT NOT NULL,
   `idServicio` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_Servicio_Subservicio`
