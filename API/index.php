@@ -16,11 +16,22 @@ require_once "models/UsuarioModel.php";
 require_once "models/LoginModel.php";
 require_once "models/CategoriaModel.php";
 require_once "models/ProductoModel.php";
+require_once "models/CitaModel.php";
+require_once "models/EspecialidadModel.php";
+require_once "models/MedicoModel.php";
+require_once "models/ServicioModel.php";
+require_once "models/SubServicioModel.php";
+
 /***--- Agregar todos los controladores*/
 require_once "controllers/UsuarioController.php";
 require_once "controllers/LoginController.php";
 require_once "controllers/CategoriaController.php";
-require_once "controllers/ProductoContoller.php";
+require_once "controllers/ProductoController.php";
+require_once "controllers/CitaController.php";
+require_once "controllers/EspecialidadController.php";
+require_once "controllers/MedicoController.php";
+require_once "controllers/ServicioController.php";
+require_once "controllers/SubServicioController.php";
 //Enrutador
 //RoutesController.php
 require_once "controllers/RoutesController.php";
