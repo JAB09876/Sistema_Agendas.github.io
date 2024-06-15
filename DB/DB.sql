@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura` (
   `total` DECIMAL NULL,
   `estado` TINYINT NULL,
   `idUsuario` CHAR(9) NOT NULL,
-  `idScursal` INT NOT NULL,
+  `idSucursal` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_Usuario_Factura`
     FOREIGN KEY (`idUsuario`)
@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_Sucursal_Factura`
-    FOREIGN KEY (`idScursal`)
+    FOREIGN KEY (`idSucursal`)
     REFERENCES `Sistema_Agenda`.`Sucursal` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
