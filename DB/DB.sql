@@ -3,9 +3,6 @@
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `Sistema_Agenda` ;
 
--- -----------------------------------------------------
--- Schema Sistema_Agenda
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `Sistema_Agenda` DEFAULT CHARACTER SET utf8 ;
 USE `Sistema_Agenda` ;
 
@@ -70,7 +67,6 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Producto` (
   `descripcion` VARCHAR(150) NULL,
   `precio` FLOAT NULL,
   `estado` TINYINT NULL,
-  `imagen` LONGBLOB NOT NULL,
   `idCategoria` INT NOT NULL,
   `idMarca` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -112,7 +108,6 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Medico` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   `estado` TINYINT NOT NULL,
-  `foto` LONGBLOB NOT NULL,
   `idEspecilidad` INT NOT NULL,
   `idSucursal` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -129,53 +124,17 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Medico` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `Sistema_Agenda`.`Servicio`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Servicio` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(255) NOT NULL,
-  `nivel_atencion` VARCHAR(255) NOT NULL,
-  `estado` TINYINT NOT NULL,
-  `idEspecialidad` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_Especialidad_Servicio`
-    FOREIGN KEY (`idEspecialidad`)
-    REFERENCES `Sistema_Agenda`.`Especialidad` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `Sistema_Agenda`.`Subservicio`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Subservicio` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tiempo` INT NOT NULL,
-  `descripción` VARCHAR(255) NOT NULL,
-  `nombre` VARCHAR(255) NOT NULL,
-  `monto` DECIMAL(10,2) NOT NULL,
-  `estado` TINYINT NOT NULL,
-  `idServicio` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_Servicio_Subservicio`
-    FOREIGN KEY (`idServicio`)
-    REFERENCES `Sistema_Agenda`.`Servicio` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
 -- Table `Sistema_Agenda`.`Cita`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Cita` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `idCliente` CHAR(9) NOT NULL,
-  `fecha` DATE NOT NULL,
-  `hora` TIME NOT NULL,
+  `fecha` DATETIME NOT NULL,
+  `horaInicio` INT(11) NOT NULL,
+  `horaFin` INT(11) NOT NULL,
   `idEstado` INT NOT NULL,
   `idMedico` INT NOT NULL,
   `idSucursal` INT NOT NULL,
-  `idSubservicio` INT NOT NULL,
   PRIMARY KEY (`id`, `idCliente`),
   CONSTRAINT `FK_Usuario_Cita`
     FOREIGN KEY (`idCliente`)
@@ -196,11 +155,6 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Cita` (
     FOREIGN KEY (`idSucursal`)
     REFERENCES `Sistema_Agenda`.`Sucursal` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Subservicio_Cita`
-    FOREIGN KEY (`idSubservicio`)
-    REFERENCES `Sistema_Agenda`.`Subservicio` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -218,11 +172,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Horario` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `hora_inicio` TIME NOT NULL,
-  `Horariocol` TIME NOT NULL,
-  `idSucursal` INT NOT NULL,
+  `hora` INT NOT NULL,
   `estado` TINYINT NULL,
   `idDia` INT NOT NULL,
+  `idSucursal` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_Sucursal_Horario`
     FOREIGN KEY (`idSucursal`)
@@ -260,6 +213,42 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
+-- Table `Sistema_Agenda`.`Servicio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Servicio` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) NOT NULL,
+  `nivel_atencion` VARCHAR(255) NOT NULL,
+  `estado` TINYINT NOT NULL,
+  `idEspecialidad` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_Especialidad_Servicio`
+    FOREIGN KEY (`idEspecialidad`)
+    REFERENCES `Sistema_Agenda`.`Especialidad` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Sistema_Agenda`.`Subservicio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Subservicio` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `tiempo` INT NOT NULL,
+  `descripcion` VARCHAR(255) NOT NULL,
+  `nombre` VARCHAR(255) NOT NULL,
+  `monto` DECIMAL(10,2) NOT NULL,
+  `estado` TINYINT NOT NULL,
+  `idServicio` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_Servicio_Subservicio`
+    FOREIGN KEY (`idServicio`)
+    REFERENCES `Sistema_Agenda`.`Servicio` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `Sistema_Agenda`.`Factura_Detalle`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura_Detalle` (
@@ -268,7 +257,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura_Detalle` (
   `subtotal` DECIMAL NOT NULL,
   `estado` TINYINT NULL,
   `idProducto` INT NULL,
-  `idCita` INT NOT NULL,
+  `idSubservicio` INT NOT NULL,
   PRIMARY KEY (`id`, `idFactura`),
   CONSTRAINT `FK_Factura_Factura_Detalle`
     FOREIGN KEY (`idFactura`)
@@ -280,9 +269,9 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura_Detalle` (
     REFERENCES `Sistema_Agenda`.`Producto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `FK_Cita_Factura_Detalle`
-    FOREIGN KEY (`idCita`)
-    REFERENCES `Sistema_Agenda`.`Cita` (`id`)
+  CONSTRAINT `FK_Subservicio_Factura_Detalle`
+    FOREIGN KEY (`idSubservicio`)
+    REFERENCES `Sistema_Agenda`.`Subservicio` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
