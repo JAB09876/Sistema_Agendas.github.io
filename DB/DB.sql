@@ -255,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Factura_Detalle` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `idFactura` INT NOT NULL,
   `subtotal` DECIMAL NOT NULL,
+  `cantidad` INT NOT NULL,
   `estado` TINYINT NULL,
   `idProducto` INT NULL,
   `idSubservicio` INT NOT NULL,
