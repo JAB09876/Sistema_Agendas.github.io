@@ -34,31 +34,13 @@ class citaModel
     {
         try {
             // Consulta SQL
-            $vSQL = "SELECT 
-                        c.id,
-                        c.fecha,
-                        c.horaInicio AS [Hora de Inicio],
-                        c.horaFin AS [Hora de Finalización],
-                        c.idEstado,
-                        c.idServicio,
-                        s.nombre AS Sucursal,
-                        m.nombre AS Medico,
-                        serv.nombre AS Servicio,
-                        ss.nombre AS SubServicio
-                    FROM 
-                        Sistema_Agenda.Cita c
-                    LEFT JOIN 
-                        Sistema_Agenda.Sucursal s ON c.idSucursal = s.id
-                    LEFT JOIN 
-                        Sistema_Agenda.Medico m ON c.idMedico = m.id
-                    LEFT JOIN 
-                        Sistema_Agenda.Servicio serv ON c.idServicio = serv.id
-                    LEFT JOIN 
-                        Sistema_Agenda.Servicio serv ON c.idSubServicio = ss.id
-                    WHERE 
-                        c.idEstado = 1 
-                    ORDER BY 
-                        c.fecha DESC;";
+            $vSQL = "SELECT c.id AS Cita,
+                        u.nombre AS Cliente,
+                        c.fecha AS Fecha,
+                        e.descripcion AS Estado
+                     FROM Cita c, Usuario u, Estado e
+                     WHERE u.id = c.idCliente AND e.id = c.idEstado
+                     ORDER BY c.id DESC;";
 
             // Ejecutar la consulta
             $vResultado = $this->enlace->executeSQL($vSQL);
@@ -84,28 +66,17 @@ class citaModel
     {
         try {
             // Consulta SQL
-            $vSQL = "SELECT 
-                        c.id,
-                        c.fecha,
-                        c.horaInicio AS [Hora de Inicio],
-                        c.horaFin AS [Hora de Finalización],
-                        c.idEstado,
-                        c.idServicio,
-                        s.nombre AS Sucursal,
+            $vSQL = "SELECT c.id AS Cita,
+                        u.nombre AS Cliente,
+                        c.fecha AS Fecha,
+                        c.horaInicio AS 'Hora de Inicio',
+                        c.horaFin AS 'Hora de Finalización',
+                        e.descripcion AS Estado,
                         m.nombre AS Medico,
-                        serv.nombre AS Servicio
-                    FROM 
-                        Sistema_Agenda.Cita c
-                    LEFT JOIN 
-                        Sistema_Agenda.Sucursal s ON c.idSucursal = s.id
-                    LEFT JOIN 
-                        Sistema_Agenda.Medico m ON c.idMedico = m.id
-                    LEFT JOIN 
-                        Sistema_Agenda.Servicio serv ON c.idServicio = serv.id
-                    WHERE 
-                        c.idEstado = 1 
-                    ORDER BY 
-                        c.fecha DESC;";
+                        s.nombre AS Sucursal
+                     FROM Cita c, Usuario u, Estado e, Medico m, Sucursal s
+                     WHERE c.id = $id AND u.id = c.idCliente AND e.id = c.idEstado AND m.id = c.idMedico AND s.id = c.idSucursal
+                     ORDER BY c.id ASC;";
             // Ejecutar la consulta
             $vResultado = $this->enlace->executeSQL($vSQL);
 
