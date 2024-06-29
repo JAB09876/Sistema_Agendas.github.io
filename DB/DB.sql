@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `Sistema_Agenda`.`Sucursal` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(255) NOT NULL,
   `telefono` VARCHAR(9) NULL,
+  `estado` TINYINT NOT NULL,
   `correo_electronico` VARCHAR(255) NOT NULL,
   `direccion_exacta` VARCHAR(350) NOT NULL,
   PRIMARY KEY (`id`))
